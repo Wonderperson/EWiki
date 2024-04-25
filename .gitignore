@@ -1,3 +1,10 @@
-node_moudles/
-
+# 忽略依赖包
+node_modules/
+# 忽略前端打包资源文件
 assets/
+
+.webpack-cache/
+
+data/
+
+yarn.lock
