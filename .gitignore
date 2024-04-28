@@ -7,4 +7,6 @@ assets/
 
 data/
 
+server/
+
 yarn.lock
