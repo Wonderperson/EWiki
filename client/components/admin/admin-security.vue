@@ -208,6 +208,16 @@
                     :hint='$t(`admin:security.enforce2faHint`)'
                     persistent-hint
                   )
+                  v-text-field.mt-3(
+                    outlined
+                    label='Banned IP Address'
+                    required
+                    v-model='config.authBannedIP'
+                    prepend-icon='mdi-account-multiple-minus'
+                    hint='Disable the login of users with specific IP addresses'
+                    persistent-hint
+                    suffix='IP Address'
+                    )
                 v-divider.mt-3
                 .overline.grey--text.pa-4 {{$t('admin:security.jwt')}}
                 .px-4.pb-3
@@ -272,6 +282,7 @@ export default {
         securityCSP: false,
         securityCSPDirectives: '',
         authAutoLogin: false,
+        authBannedIP: '',
         authHideLocal: false,
         authLoginBgUrl: '',
         authJwtAudience: 'urn:wiki.js',
@@ -299,6 +310,7 @@ export default {
             mutation (
               $authAutoLogin: Boolean
               $authEnforce2FA: Boolean
+              $authBannedIP: String
               $authHideLocal: Boolean
               $authLoginBgUrl: String
               $authJwtAudience: String
@@ -322,6 +334,7 @@ export default {
                 updateConfig(
                   authAutoLogin: $authAutoLogin,
                   authEnforce2FA: $authEnforce2FA,
+                  authBannedIP: $authBannedIP,
                   authHideLocal: $authHideLocal,
                   authLoginBgUrl: $authLoginBgUrl,
                   authJwtAudience: $authJwtAudience,
@@ -354,6 +367,7 @@ export default {
           variables: {
             authAutoLogin: _.get(this.config, 'authAutoLogin', false),
             authEnforce2FA: _.get(this.config, 'authEnforce2FA', false),
+            authBannedIP: _.get(this.config, 'authBannedIP', ''),
             authHideLocal: _.get(this.config, 'authHideLocal', false),
             authLoginBgUrl: _.get(this.config, 'authLoginBgUrl', ''),
             authJwtAudience: _.get(this.config, 'authJwtAudience', ''),

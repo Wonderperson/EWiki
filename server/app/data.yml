@@ -65,6 +65,7 @@ defaults:
       autoLogin: false
       enforce2FA: false
       hideLocal: false
+      authBannedIP: ''
       loginBgUrl: ''
       audience: 'urn:wiki.js'
       tokenExpiration: '30m'

@@ -26,6 +26,7 @@ module.exports = {
         ...WIKI.config.security,
         authAutoLogin: WIKI.config.auth.autoLogin,
         authEnforce2FA: WIKI.config.auth.enforce2FA,
+        authBannedIP: WIKI.config.auth.bannedIP,
         authHideLocal: WIKI.config.auth.hideLocal,
         authLoginBgUrl: WIKI.config.auth.loginBgUrl,
         authJwtAudience: WIKI.config.auth.audience,
@@ -83,6 +84,7 @@ module.exports = {
         WIKI.config.auth = {
           autoLogin: _.get(args, 'authAutoLogin', WIKI.config.auth.autoLogin),
           enforce2FA: _.get(args, 'authEnforce2FA', WIKI.config.auth.enforce2FA),
+          bannedIP: _.get(args, 'authBannedIP', WIKI.config.auth.bannedIP),
           hideLocal: _.get(args, 'authHideLocal', WIKI.config.auth.hideLocal),
           loginBgUrl: _.get(args, 'authLoginBgUrl', WIKI.config.auth.loginBgUrl),
           audience: _.get(args, 'authJwtAudience', WIKI.config.auth.audience),
