@@ -35,6 +35,7 @@ type SiteMutation {
     footerOverride: String
     logoUrl: String
     pageExtensions: String
+    authBannedIP: String
     authAutoLogin: Boolean
     authEnforce2FA: Boolean
     authHideLocal: Boolean
@@ -87,6 +88,7 @@ type SiteConfig {
   pageExtensions: String
   authAutoLogin: Boolean
   authEnforce2FA: Boolean
+  authBannedIP: String
   authHideLocal: Boolean
   authLoginBgUrl: String
   authJwtAudience: String

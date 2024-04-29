@@ -23,8 +23,15 @@ const bruteforce = new ExpressBrute(new BruteKnex({
  * Login form
  */
 router.get('/login', async (req, res, next) => {
+  // 校验登录IP是否为合法IP
+  userIP = req.ip || req.headers['x-forwarded-for'];
+  if (!WIKI.auth.ipValidate(userIP)) {
+    _.set(res.locals, 'pageMeta.title', 'Unauthorized')
+    return res.status(403).render('unauthorized', {
+      action: 'view'
+    });
+  }
   _.set(res.locals, 'pageMeta.title', 'Login')
-
   if (req.query.legacy || (req.get('user-agent') && req.get('user-agent').indexOf('Trident') >= 0)) {
     const { formStrategies, socialStrategies } = await WIKI.models.authentication.getStrategiesForLegacyClient()
     res.render('legacy/login', {

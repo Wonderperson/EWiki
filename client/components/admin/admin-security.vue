@@ -214,7 +214,7 @@
                     required
                     v-model='config.authBannedIP'
                     prepend-icon='mdi-account-multiple-minus'
-                    hint='Disable the login of users with specific IP addresses'
+                    hint='Disable the login of users with specific IP addresses, multiple IP addresses separated by |'
                     persistent-hint
                     suffix='IP Address'
                     )
@@ -420,6 +420,7 @@ export default {
           site {
             config {
               authAutoLogin
+              authBannedIP
               authEnforce2FA
               authHideLocal
               authLoginBgUrl

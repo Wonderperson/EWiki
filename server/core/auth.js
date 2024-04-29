@@ -7,6 +7,7 @@ const { DateTime } = require('luxon')
 const Promise = require('bluebird')
 const crypto = Promise.promisifyAll(require('crypto'))
 const pem2jwk = require('pem-jwk').pem2jwk
+const net = require('net');
 
 const securityHelper = require('../helpers/security')
 
@@ -100,6 +101,71 @@ module.exports = {
       WIKI.logger.error(`Failed to initialize Authentication Strategies: [ ERROR ]`)
       WIKI.logger.error(err)
     }
+  },
+  
+  /**
+   * 判断匹配的ip地址是否为有效的ipv4
+   *
+   * @param {String} pattern
+   */
+  isIPv4Pattern(pattern) {
+    const patternParts = pattern.split('.');
+    if (patternParts.length !== 4) {
+      return false;
+    }
+
+    for (let part of patternParts) {
+      if (part !== '*' && isNaN(part)) {
+        return false;
+      }
+    }
+
+    return true;
+  },
+
+  /**
+   * 判断请求IP地址是否在禁止IP列表内
+   *
+   * @param {String} ip
+   * @param {String} pattern
+   */
+  isIPMatchingPattern(ip, pattern) {
+    if (pattern === '0.0.0.0') {
+      return true; // 匹配所有IP地址
+    }
+    // if (!WIKI.auth.isIPv4Pattern(pattern)) {
+    //   return false;
+    // }
+    const ipParts = ip.split('.');
+    const patternParts = pattern.split('.');
+
+    for (let i = 0; i < 4; i++) {
+      if (patternParts[i] !== '*' && patternParts[i] !== ipParts[i]) {
+        return false;
+      }
+    }
+
+    return true;
+  },
+
+  /**
+   * 验证是否合法IP
+   *
+   * @param {String} userIP
+   */
+  ipValidate(userIP) {
+    patterns = WIKI.config.auth.bannedIP;
+    // userIP = req.ip || req.connection.remoteAddress || req.headers['x-forwarded-for'];
+    
+    if (patterns) {
+      const patternlist = patterns.split('|');
+      for (let pattern of patternlist) {
+        if (WIKI.auth.isIPv4Pattern(pattern) && WIKI.auth.isIPMatchingPattern(userIP, pattern)) {
+          return false;
+        }
+      }
+    }
+    return true;
   },
 
   /**
