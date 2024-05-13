@@ -18,6 +18,8 @@
 import _ from 'lodash'
 import { get, sync } from 'vuex-pathify'
 import DecoupledEditor from '@requarks/ckeditor5'
+// 2024/05/13: import以解决中文翻译不显示的问题
+import '@requarks/ckeditor5/build/translations/zh-cn'
 // import DecoupledEditor from '../../../../wiki-ckeditor5/build/ckeditor'
 import EditorConflict from './ckeditor/conflict.vue'
 import { html as beautify } from 'js-beautify/js/lib/beautifier.min.js'
@@ -64,11 +66,28 @@ export default {
   },
   async mounted () {
     this.$store.set('editor/editorKey', 'ckeditor')
-
+    // 2024/05/13: 可视编辑界面显示中文异常，ckeditor5库中对应的简体中文代码为zh-cn,需要转换
+    let language = this.locale != 'zh' ? this.locale : 'zh-cn';
     this.editor = await DecoupledEditor.create(this.$refs.editor, {
-      language: this.locale,
+      language: language,
       placeholder: 'Type the page content here',
       disableNativeSpellChecker: false,
+      fontFamily: {
+        options: [
+            'default',
+            'Blackoak Std',
+            '宋体,SimSun',
+            '新宋体,NSimSun',
+            '黑体,SimHei',
+            '微软雅黑,Microsoft YaHei',
+            '楷体_GB2312,KaiTi_GB2312',
+            '隶书,LiSu',
+            '幼园,YouYuan',
+            '华文细黑,STXihei',
+            '细明体,MingLiU',
+            '新细明体,PMingLiU'
+        ]
+    },
       // TODO: Mention autocomplete
       //
       // mention: {
