@@ -48,7 +48,6 @@ export default {
  
     // 根据页码渲染相应的PDF
     renderPage(url) {
-      debugger
       // const container = document.getElementById("pdfContainer");
       const container = this.$refs.pdfDiv;
       // 禁用右键菜单
