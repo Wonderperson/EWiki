@@ -112,7 +112,6 @@
               //-   v-list-item-title {{ $t('admin:dev.graphiql.title') }}
               //- v-list-item(to='/dev-voyager')
               //-   v-list-item-title {{ $t('admin:dev.voyager.title') }}
-            v-divider.my-2
 
     v-main(:class='$vuetify.theme.dark ? "grey darken-5" : "grey lighten-5"')
       transition(name='admin-router')
