@@ -76,7 +76,6 @@ router.post('/u', (req, res, next) => {
   }
 
   // Sanitize filename
-  // fileMeta.originalname = sanitize(fileMeta.originalname.toLowerCase().replace(/[\s,;#]+/g, '_'))
   fileMeta.originalname = sanitize(fileMeta.originalname.replace(/[\s,;#]+/g, '_'))
 
   // Check if user can upload at path

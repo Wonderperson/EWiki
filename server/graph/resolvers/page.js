@@ -111,7 +111,7 @@ module.exports = {
             }
           }
           if (args.tags && args.tags.length > 0) {
-            queryBuilder.whereIn('tags.tag', args.tags.map(t => _.trim(t).toLowerCase()))
+            queryBuilder.whereIn('tags.tag', args.tags.map(t => _.trim(t)))
           }
           const orderDir = args.orderByDirection === 'DESC' ? 'desc' : 'asc'
           switch (args.orderBy) {
@@ -499,7 +499,7 @@ module.exports = {
         const affectedRows = await WIKI.models.tags.query()
           .findById(args.id)
           .patch({
-            tag: _.trim(args.tag).toLowerCase(),
+            tag: _.trim(args.tag),
             title: _.trim(args.title)
           })
         if (affectedRows < 1) {

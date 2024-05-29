@@ -314,7 +314,7 @@ export default {
       }
     },
     newTag (newValue, oldValue) {
-      const tagClean = _.trim(newValue || '').toLowerCase()
+      const tagClean = _.trim(newValue || '')
       if (tagClean && tagClean.length > 0) {
         if (!_.includes(this.tags, tagClean)) {
           this.tags = [...this.tags, tagClean]
