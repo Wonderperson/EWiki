@@ -3,6 +3,7 @@ const mdAttrs = require('markdown-it-attrs')
 const mdDecorate = require('markdown-it-decorate')
 const _ = require('lodash')
 const underline = require('./underline')
+import {align} from '@mdit/plugin-align'
 
 const quoteStyles = {
   Chinese: '””‘’',
@@ -44,7 +45,18 @@ module.exports = {
       allowedAttributes: ['id', 'class', 'target']
     })
     mkdown.use(mdDecorate)
-
+    // const align = require('@mdit/plugin-align').align;
+    // const { align } = await import('@mdit/plugin-align');
+    // align.default();
+    mkdown.use(align);
+    // (async function(mkdown) {
+    //   try {
+    //     const {align} = await import('@mdit/plugin-align');
+    //     mkdown.use(align)
+    //   } catch (error) {
+    //     console.error('Failed to load @mdit/plugin-align:', error);
+    //   }
+    // })(mkdown);
     for (let child of this.children) {
       const renderer = require(`../${_.kebabCase(child.key)}/renderer.js`)
       await renderer.init(mkdown, child.config)
