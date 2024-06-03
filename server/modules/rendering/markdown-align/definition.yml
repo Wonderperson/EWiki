@@ -1,8 +1,0 @@
-key: markdownAlign
-title: Align
-description: Parse aligneviations into align tags
-author: gey
-icon: mdi-contain-start
-enabledDefault: true
-dependsOn: markdownCore
-props: {}

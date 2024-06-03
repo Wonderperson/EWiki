@@ -73,27 +73,6 @@
                 v-icon(color='error') mdi-alpha-e-box-outline
               v-list-item-title {{$t('editor:markup.blockquoteError')}}
             v-divider
-        
-        v-menu(offset-y, open-on-hover)
-          template(v-slot:activator='{ on }')
-            v-btn.animated.fadeIn.wait-p6s(icon, tile, v-on='on').mx-0
-              v-icon mdi-format-align-left
-          v-list.py-0
-            v-list-item(@click='insertBeforeEachLine({ before: `::: left`, after: `:::`})')
-              v-list-item-action
-                v-icon(color='black') mdi-format-align-left
-              v-list-item-title {{'左对齐'}}
-            v-divider
-            v-list-item(@click='insertBeforeEachLine({ before: `::: right`, after: `:::`})')
-              v-list-item-action
-                v-icon(color='black') mdi-format-align-right
-              v-list-item-title {{'右对齐'}}
-            v-divider
-            v-list-item(@click='insertBeforeEachLine({ before: `::: center`, after: `:::`})')
-              v-list-item-action
-                v-icon(color='black') mdi-format-align-center
-              v-list-item-title {{'居中对齐'}}
-            v-divider
         v-tooltip(bottom, color='primary')
           template(v-slot:activator='{ on }')
             v-btn.animated.fadeIn.wait-p7s(icon, tile, v-on='on', @click='insertBeforeEachLine({ content: `- `})').mx-0
@@ -236,7 +215,6 @@ import underline from '../../libs/markdown-it-underline'
 import 'katex/dist/contrib/mhchem'
 import twemoji from 'twemoji'
 import plantuml from './markdown/plantuml'
-import { align } from '@mdit/plugin-align'
 
 // Prism (Syntax Highlighting)
 import Prism from 'prismjs'
@@ -298,7 +276,6 @@ const md = new MarkdownIt({
   .use(mdMark)
   .use(mdFootnote)
   .use(mdImsize)
-  .use(align)
 
 // DOMPurify fix for draw.io
 DOMPurify.addHook('uponSanitizeElement', (elm) => {
@@ -552,24 +529,8 @@ export default {
     /**
      * Insert content before current line
      */
-    insertBeforeEachLine({ before, content, after }) {
+    insertBeforeEachLine({ content, after }) {
       let lines = []
-      let targetLine = null;
-
-      // 检查是否有文本被选中
-      if (this.cm.doc.somethingSelected()) {
-          // 获取第一个选中区域的起始行
-          const selection = this.cm.doc.listSelections()[0];
-          targetLine = (selection.anchor.line < selection.head.line) ? selection.anchor.line : selection.head.line;
-      } else {
-          // 如果没有选中文本，则使用当前光标所在行
-          targetLine = this.cm.doc.getCursor('head').line;
-      }
-      // 如果before有值，且目标行已确定，则在目标行的开头插入before内容
-      if (before && targetLine !== null) {
-          const fromPos = { line: targetLine, ch: 0 };
-          this.cm.doc.replaceRange(`\n${before}\n`, fromPos);
-      }
       if (!this.cm.doc.somethingSelected()) {
         lines.push(this.cm.doc.getCursor('head').line)
       } else {
@@ -579,17 +540,15 @@ export default {
           return _.times(range, l => l + lowestLine)
         }))
       }
-      if (content){
-          lines.forEach(ln => {
-          let lineContent = this.cm.doc.getLine(ln)
-          const lineLength = lineContent.length
-          if (_.startsWith(lineContent, content)) {
-            lineContent = lineContent.substring(content.length)
-          }
+      lines.forEach(ln => {
+        let lineContent = this.cm.doc.getLine(ln)
+        const lineLength = lineContent.length
+        if (_.startsWith(lineContent, content)) {
+          lineContent = lineContent.substring(content.length)
+        }
 
-          this.cm.doc.replaceRange(content + lineContent, { line: ln, ch: 0 }, { line: ln, ch: lineLength })
-        })
-      }
+        this.cm.doc.replaceRange(content + lineContent, { line: ln, ch: 0 }, { line: ln, ch: lineLength })
+      })
       if (after) {
         const lastLine = _.last(lines)
         this.cm.doc.replaceRange(`\n${after}\n`, { line: lastLine, ch: this.cm.doc.getLine(lastLine).length + 1 })

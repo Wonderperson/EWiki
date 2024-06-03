@@ -234,25 +234,26 @@ module.exports = {
     })
 
     // --------------------------------
-    // Wrap non-empty root text nodes
+    // Wrap root table nodes && non-empty root text nodes
+    // 使表格、图片居中：
+    // 1. 修改css属性table-container使表格居中
+    // 2. 修改img的上层p tag的属性，使img居中
     // --------------------------------
-
     $('body').contents().toArray().forEach(item => {
-      if (item && item.type === 'text' && item.parent.name === 'body' && item.data !== `\n` && item.data !== `\r`) {
-        $(item).wrap('<div></div>')
+      if (item && item.parent.name === 'body') {
+          if (item.type === 'text' && item.data !== `\n` && item.data !== `\r`) {
+              $(item).wrap('<div></div>')
+          } else if (item.name === 'table') {
+              $(item).wrap('<div class="table-container"></div>')
+          } else if (item.name === 'p' && item.children.length > 0) {
+              for (let child of item.children) {
+                  if (child.name === 'img') {
+                    $(item).attr('style', 'text-align:center;');
+                  }
+              }
+          } 
       }
     })
-
-    // --------------------------------
-    // Wrap root table nodes
-    // --------------------------------
-
-    $('body').contents().toArray().forEach(item => {
-      if (item && item.name === 'table' && item.parent.name === 'body') {
-        $(item).wrap('<div class="table-container"></div>')
-      }
-    })
-
     // --------------------------------
     // Escape mustache expresions
     // --------------------------------

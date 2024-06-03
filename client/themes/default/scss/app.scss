@@ -825,7 +825,8 @@
   // ---------------------------------
 
   table {
-    margin: .5rem 0;
+    // margin: .5rem 0;
+    margin: 0 auto;
     border-spacing: 0;
     border-radius: 5px;
     border: 1px solid mc('grey', '300');
@@ -980,7 +981,7 @@
     width: 100%;
     overflow-x: auto;
   }
-
+  
   // ---------------------------------
   // IMAGES
   // ---------------------------------
